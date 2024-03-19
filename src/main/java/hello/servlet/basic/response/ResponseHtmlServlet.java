@@ -7,12 +7,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
-@WebServlet(name = "responseHeaderServlet", urlPatterns = "/response-header")
-public class ResponseHeaderServlet extends HttpServlet {
+@WebServlet(name = "responseHtmlServlet", urlPatterns = "/response-html")
+public class ResponseHtmlServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //[Status-line]
-        resp.setStatus(HttpServletResponse.SC_OK);
+         resp.setContentType("text/html");
+         resp.setCharacterEncoding("utf-8");
+
+        PrintWriter writer = resp.getWriter();
+        writer.println("<html>");
+        writer.println("</html>");
     }
 }
