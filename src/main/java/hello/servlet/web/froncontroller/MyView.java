@@ -14,7 +14,7 @@ public class MyView {
         this.viewPath = viewPath;
     }
 
-    void render(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void render(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         RequestDispatcher requestDispatcher = req.getRequestDispatcher(viewPath);
         requestDispatcher.forward(req, resp);
     }
