@@ -6,6 +6,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MyView {
     private String viewPath;
@@ -18,4 +20,6 @@ public class MyView {
         RequestDispatcher requestDispatcher = req.getRequestDispatcher(viewPath);
         requestDispatcher.forward(req, resp);
     }
+
+    Map<String, String> paramMap = new HashMap<>();
 }
