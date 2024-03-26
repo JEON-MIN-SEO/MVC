@@ -22,4 +22,14 @@ public class MyView {
     }
 
     Map<String, String> paramMap = new HashMap<>();
+
+    public void render(Map<String, Object> model, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        modelToRequestAttribute(model, req);
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher(viewPath);
+         requestDispatcher.forward(req, resp);
+    }
+
+    private static void modelToRequestAttribute(Map<String, Object> model, HttpServletRequest req) {
+        model.forEach((key, value) -> req.setAttribute(key,value));
+    }
 }
