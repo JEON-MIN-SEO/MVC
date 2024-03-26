@@ -16,9 +16,7 @@ public class MemberListControllerV4 implements ControllerV4 {
     public String process(Map<String, String> paramMap, Map<String, Object> model) {
         List<Member> members = memberRepository.findAll();
 
-        ModelView mv = new ModelView("members");
-        mv.getModel().put("members", members);
-
-        return mv;
+        model.put("members", members);
+        return "members";
     }
 }
