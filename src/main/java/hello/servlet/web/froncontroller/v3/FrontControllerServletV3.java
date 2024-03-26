@@ -36,18 +36,22 @@ public class FrontControllerServletV3 extends HttpServlet {
 
         String requestURI = req.getRequestURI(); //요청한 uri 작성 값이 들어간다.(xxx,xx/.../ ...값이 들어간다.
 
-        ControllerV3 controllerSearch = controllerMap.get(requestURI);
-        if (controllerSearch == null){
+        //new MemberFormControllerV3()
+        ControllerV3 controller = controllerMap.get(requestURI);
+        if (controller == null){
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
-        Map<String, String> paramMap = createParamMap(req);
-        ModelView mv = controllerSearch.process(paramMap);
+        Map<String, String> paramMap = createParamMap(req); //파라미터 값을 모두 뽑는 작업
+        ModelView mv = controller.process(paramMap); //process에서 모델뷰를 반환 v  iewName: new-form을 return
 
+        //viewName: new-form
         String viewName = mv.getViewName();
-        MyView view = viewResolver(viewName);
-        view.render(mv.getModel(), req, resp);
+        MyView view = viewResolver(viewName); //viewName을 가지고 viewResolver호출 + MyView를 반환
+        //"/WEB-INF/views" + viewName + ".jsp"
+
+        view.render(mv.getModel(), req, resp); //이때 모델도 같이 넘긴다.
 
     }
 
@@ -60,5 +64,16 @@ public class FrontControllerServletV3 extends HttpServlet {
         req.getParameterNames().asIterator()
                 .forEachRemaining(paramName -> paramMap.put(paramName, req.getParameter(paramName)));
         return paramMap;
+//        <form action="/submit" method="post">
+//          <input type="text" name="username">
+//          <input type="password" name="password">
+//          <button type="submit">Submit</button>
+//        </form>
+//    {
+//        "username": "johndoe",
+//            "password": "123"
+//    }
+//      즉,req.getParameterNames()으로 "username"과 "password"을 뽑아내고 ("username", value)를 넣는다.
     }
+
 }

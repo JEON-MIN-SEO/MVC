@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class MemberFormControllerV4 implements ControllerV4 {
     @Override
-    public String process(Map<String, String> paramap, Map<String, Object> model) {
+    public String process(Map<String, String> paramMap, Map<String, Object> model) {
         return "new-form";
     }
 }
