@@ -2,7 +2,6 @@ package hello.servlet.web.froncontroller;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class ModelView {
     private String viewName;
