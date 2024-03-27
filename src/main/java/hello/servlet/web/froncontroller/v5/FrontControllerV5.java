@@ -6,7 +6,11 @@ import hello.servlet.web.froncontroller.v3.ControllerV3;
 import hello.servlet.web.froncontroller.v3.controller.MemberFormControllerV3;
 import hello.servlet.web.froncontroller.v3.controller.MemberListControllerV3;
 import hello.servlet.web.froncontroller.v3.controller.MemberSaveControllerV3;
+import hello.servlet.web.froncontroller.v4.controller.MemberFormControllerV4;
+import hello.servlet.web.froncontroller.v4.controller.MemberListControllerV4;
+import hello.servlet.web.froncontroller.v4.controller.MemberSaveControllerV4;
 import hello.servlet.web.froncontroller.v5.adapter.ControllerV3HandlerAdapter;
+import hello.servlet.web.froncontroller.v5.adapter.ControllerV4HandlerAdapter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -34,23 +38,29 @@ public class FrontControllerV5 extends HttpServlet {
 
     private void initHandlerAdapters() {
         handlerAdapters.add(new ControllerV3HandlerAdapter()); //handlerAdapters 즉, List에 V3,V4다 담
+        handlerAdapters.add(new ControllerV4HandlerAdapter());
     }
 
     private void initHandlerMappingMap() {
-        handlerMappingMap.put("/front-controller/v3/members/new-form", new MemberFormControllerV3());
-        handlerMappingMap.put("/front-controller/v3/members/save", new MemberSaveControllerV3());
-        handlerMappingMap.put("/front-controller/v3/members", new MemberListControllerV3());
+        handlerMappingMap.put("/front-controller/v5/v3/members/new-form", new MemberFormControllerV3());
+        handlerMappingMap.put("/front-controller/v5/v3/members/save", new MemberSaveControllerV3());
+        handlerMappingMap.put("/front-controller/v5/v3/members", new MemberListControllerV3());
+
+        handlerMappingMap.put("/front-controller/v5/v4/members/new-form", new MemberFormControllerV4());
+        handlerMappingMap.put("/front-controller/v5/v4/members/save", new MemberSaveControllerV4());
+        handlerMappingMap.put("/front-controller/v5/v4/members", new MemberListControllerV4());
     }
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //"/front-controller/v5/v3/members/new-form"에 대해서 handler = new MemberFormControllerV3() 반환
         Object handler = getHandler(req);
-
         if (handler == null){
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
-
+        //getHandlerAdapter = ControllerV3HandlerAdapter
+        //handler = MemberFormControllerV3()
         MyHandlerAdapter adapter = getHandlerAdapter(handler);
 
         ModelView mv = adapter.handle(req, resp, handler);
@@ -63,10 +73,12 @@ public class FrontControllerV5 extends HttpServlet {
         view.render(mv.getModel(), req, resp); //이때 모델도 같이 넘긴다.
     }
 
+    //handler = MemberFormControllerV3()
     private MyHandlerAdapter getHandlerAdapter(Object handler) {
         for (MyHandlerAdapter adapter : handlerAdapters) {
             if(adapter.supports(handler)){
                 return adapter;
+                //ControllerV3HandlerAdapter를 반환
             }
         }
         throw new IllegalArgumentException("handler adapter를 찾을 수 없습니다 ");
