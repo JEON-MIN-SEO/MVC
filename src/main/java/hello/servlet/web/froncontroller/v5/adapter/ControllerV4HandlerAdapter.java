@@ -20,7 +20,7 @@ public class ControllerV4HandlerAdapter implements MyHandlerAdapter {
 
     @Override
     public ModelView handle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException, IOException {
-        ControllerV4 controller =(ControllerV4) handler;
+        ControllerV4 controller = (ControllerV4) handler;
 
         Map<String, String> paramMap = createParamMap(request); //파라미터 값을 모두 뽑는 작업
         Map<String, Object> model = new HashMap<>();
@@ -33,8 +33,9 @@ public class ControllerV4HandlerAdapter implements MyHandlerAdapter {
     }
 
     private static Map<String, String> createParamMap(HttpServletRequest req) {
-        Map<String, String > paramMap = new HashMap<>();
+        Map<String, String> paramMap = new HashMap<>();
         req.getParameterNames().asIterator()
                 .forEachRemaining(paramName -> paramMap.put(paramName, req.getParameter(paramName)));
         return paramMap;
+    }
 }
